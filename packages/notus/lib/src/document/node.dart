@@ -53,7 +53,7 @@ abstract class Node extends LinkedListEntry<Node> {
 
   /// Offset in characters of this node in the document.
   int get documentOffset {
-    final parentOffset = (_parent is! RootNode) ? _parent.documentOffset : 0;
+    final parentOffset = (_parent is! RootNode && _parent != null) ? _parent.documentOffset : 0;
     return parentOffset + offset;
   }
 
@@ -304,7 +304,5 @@ class RootNode extends ContainerNode<ContainerNode<Node>> {
   void optimize() {/* no-op */}
 
   @override
-  Delta toDelta() => children
-      .map((child) => child.toDelta())
-      .fold(Delta(), (a, b) => a.concat(b));
+  Delta toDelta() => children.map((child) => child.toDelta()).fold(Delta(), (a, b) => a.concat(b));
 }
