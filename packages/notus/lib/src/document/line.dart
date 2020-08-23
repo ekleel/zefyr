@@ -17,9 +17,7 @@ import 'node.dart';
 ///
 /// When a line contains an embed, it fully occupies the line, no other embeds
 /// or text nodes are allowed.
-class LineNode extends ContainerNode<LeafNode>
-    with StyledNodeMixin
-    implements StyledNode {
+class LineNode extends ContainerNode<LeafNode> with StyledNodeMixin implements StyledNode {
   /// Returns `true` if this line contains an embed.
   bool get hasEmbed {
     if (childCount == 1) {
@@ -34,9 +32,7 @@ class LineNode extends ContainerNode<LeafNode>
     if (isLast) {
       if (parent is BlockNode) {
         if (parent.isLast) return null;
-        LineNode line = (parent.next is BlockNode)
-            ? (parent.next as BlockNode).first
-            : parent.next;
+        LineNode line = (parent.next is BlockNode) ? (parent.next as BlockNode).first : parent.next;
         return line;
       } else {
         return null;
@@ -162,9 +158,7 @@ class LineNode extends ContainerNode<LeafNode>
 
   @override
   Delta toDelta() {
-    final delta = children
-        .map((text) => text.toDelta())
-        .fold(Delta(), (a, b) => a.concat(b));
+    final delta = children.map((text) => text.toDelta()).fold(Delta(), (a, b) => a.concat(b));
     var attributes = style;
     if (parent is BlockNode) {
       BlockNode block = parent;
@@ -227,16 +221,15 @@ class LineNode extends ContainerNode<LeafNode>
     final isLineFormat = (index + local == thisLength) && local == 1;
 
     if (isLineFormat) {
-      assert(
-          style.values.every((attr) => attr.scope == NotusAttributeScope.line),
-          'It is not allowed to apply inline attributes to line itself.');
+      /// BUG: removed this because it throws an error when removing an embed.
+      // assert(
+      //     style.values.every((attr) => attr.scope == NotusAttributeScope.line),
+      //     'It is not allowed to apply inline attributes to line itself.');
       _formatAndOptimize(style);
     } else {
       // otherwise forward to children as it's inline format update.
-      assert(index + local != thisLength,
-          'It is not allowed to apply inline attributes to line itself.');
-      assert(style.values
-          .every((attr) => attr.scope == NotusAttributeScope.inline));
+      assert(index + local != thisLength, 'It is not allowed to apply inline attributes to line itself.');
+      assert(style.values.every((attr) => attr.scope == NotusAttributeScope.inline));
       super.retain(index, local, style);
     }
 
