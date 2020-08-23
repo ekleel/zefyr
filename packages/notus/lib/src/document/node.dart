@@ -53,6 +53,7 @@ abstract class Node extends LinkedListEntry<Node> {
 
   /// Offset in characters of this node in the document.
   int get documentOffset {
+    print('documentOffset is called!: $_parent');
     final parentOffset = (_parent is! RootNode && _parent != null) ? _parent.documentOffset : 0;
     return parentOffset + offset;
   }
