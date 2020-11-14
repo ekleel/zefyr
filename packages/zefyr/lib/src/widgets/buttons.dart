@@ -490,11 +490,11 @@ class _LinkButtonState extends State<LinkButton> {
     final toolbar = ZefyrToolbar.of(context);
     final style = toolbar.editor.selectionStyle;
 
-    String value = 'اضغط لتحرير الرابط';
+    var value = 'اضغط لتحرير الرابط';
     if (style.contains(NotusAttribute.link)) {
       value = style.value(NotusAttribute.link);
     }
-    final clipboardEnabled = value != 'اضغط لتحرير الرابط';
+    // final clipboardEnabled = value != 'اضغط لتحرير الرابط';
     final body = !isEditing
         ? _LinkView(value: value, onTap: edit)
         : _LinkInput(
@@ -505,8 +505,8 @@ class _LinkButtonState extends State<LinkButton> {
     final items = <Widget>[Expanded(child: body)];
     if (!isEditing) {
       final unlinkHandler = hasLink(style) ? unlink : null;
-      final copyHandler = clipboardEnabled ? copyToClipboard : null;
-      final openHandler = hasLink(style) ? openInBrowser : null;
+      // final copyHandler = clipboardEnabled ? copyToClipboard : null;
+      // final openHandler = hasLink(style) ? openInBrowser : null;
       final buttons = <Widget>[
         toolbar.buildButton(context, ZefyrToolbarAction.unlink, onPressed: unlinkHandler),
         // toolbar.buildButton(context, ZefyrToolbarAction.clipboardCopy, onPressed: copyHandler),
@@ -580,7 +580,7 @@ class _LinkInputState extends State<_LinkInput> {
     final theme = Theme.of(context);
     final toolbarTheme = ZefyrTheme.of(context).toolbarTheme;
     final color = widget.formatError ? Colors.redAccent : toolbarTheme.iconColor;
-    final style = theme.textTheme.subhead.copyWith(color: color);
+    final style = theme.textTheme.subtitle1.copyWith(color: color);
     return TextField(
       style: style,
       keyboardType: TextInputType.url,
@@ -621,7 +621,7 @@ class _LinkView extends StatelessWidget {
               value,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: theme.textTheme.subhead.copyWith(color: toolbarTheme.disabledIconColor, height: 1),
+              style: theme.textTheme.subtitle1.copyWith(color: toolbarTheme.disabledIconColor, height: 1),
             ),
           )
         ],

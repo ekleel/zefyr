@@ -21,7 +21,7 @@ class ZefyrQuote extends StatelessWidget {
     final innerMargin = theme.attributeTheme.quote.innerMargin;
     final innerPadding = theme.attributeTheme.quote.innerPadding;
 
-    List<Widget> items = [];
+    final items = <Widget>[];
     for (var line in node.children) {
       items.add(_buildLine(line, style, theme.indentWidth, decoration, innerMargin, innerPadding));
     }

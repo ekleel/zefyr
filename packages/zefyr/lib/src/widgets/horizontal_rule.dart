@@ -41,7 +41,7 @@ class RenderHorizontalRule extends RenderEditableBox {
   @override
   EmbedNode get node => _node;
   EmbedNode _node;
-  ZefyrThemeData _theme;
+  final ZefyrThemeData _theme;
   set node(EmbedNode value) {
     if (_node == value) return;
     _node = value;
@@ -56,7 +56,7 @@ class RenderHorizontalRule extends RenderEditableBox {
 
   @override
   List<ui.TextBox> getEndpointsForSelection(TextSelection selection) {
-    TextSelection local = getLocalSelection(selection);
+    final local = getLocalSelection(selection);
     if (local.isCollapsed) {
       final dx = local.extentOffset == 0 ? 0.0 : size.width;
       return [
@@ -80,11 +80,11 @@ class RenderHorizontalRule extends RenderEditableBox {
   void paint(PaintingContext context, Offset offset) {
     var paint = Paint()..color = _theme.dividerColor;
 
-    double dims = 4;
-    double spacer = 14;
+    final dims = 4;
+    final spacer = 14;
 
-    final double startY = size.width / 2 - (2 * (spacer));
-    double offsetY = 0;
+    final startY = size.width / 2 - (2 * (spacer));
+    var offsetY = 0;
 
     for (var i = 0; i < 3; i++) {
       offsetY += (spacer + dims);
@@ -99,7 +99,7 @@ class RenderHorizontalRule extends RenderEditableBox {
 
   @override
   TextPosition getPositionForOffset(Offset offset) {
-    int position = _node.documentOffset;
+    var position = _node.documentOffset;
 
     if (offset.dx > size.width / 2) {
       position++;
@@ -118,7 +118,7 @@ class RenderHorizontalRule extends RenderEditableBox {
     final localSelection = getLocalSelection(selection);
     assert(localSelection != null);
     if (!localSelection.isCollapsed) {
-      final Paint paint = Paint()..color = selectionColor;
+      final paint = Paint()..color = selectionColor;
       final rect = Rect.fromLTWH(0.0, 0.0, size.width, _kHeight);
       context.canvas.drawRect(rect.shift(offset), paint);
     }
@@ -127,7 +127,7 @@ class RenderHorizontalRule extends RenderEditableBox {
   @override
   Offset getOffsetForCaret(ui.TextPosition position, ui.Rect caretPrototype) {
     final pos = position.offset - node.documentOffset;
-    Offset caretOffset = Offset.zero;
+    var caretOffset = Offset.zero;
     if (pos == 1) {
       caretOffset = caretOffset + Offset(size.width - 1.0, 0.0);
     }

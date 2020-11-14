@@ -3,8 +3,8 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async';
-import 'dart:convert';
 
+import 'package:example/src/selection.dart';
 import 'package:flutter/material.dart';
 import 'package:quill_delta/quill_delta.dart';
 import 'package:zefyr/zefyr.dart';
@@ -38,14 +38,35 @@ final doc =
     r'g":2}},{"insert":"Of course:\nimport ‘package:flutter/material.dart’;"},{"insert":"\n","attributes":{"block":"code"}},{"insert":"import ‘package:zefyr/zefyr.dart’;"},{"insert":"\n\n","attributes":{"block":"code"}},{"insert":"void main() {"},{"insert":"\n","attributes":{"block":"code"}},{"insert":" runApp(MyZefyrApp());"},{"insert":"\n","attributes":{"block":"code"}},{"insert":"}"},{"insert":"\n","attributes":{"block":"code"}},{"insert":"\n\n\n"}]';
 
 final ZEFYR_TO_QUILL_ISSUE = [
-  {"insert": "أما الفلسفة فمجنون بها منذ عرفتها، لقد سقطت في\n"},
   {
-    "insert": "​\n",
-    "attributes": {
-      "embed": {"type": "hr"}
+    'insert':
+        'أما الفلسفة فمجنون بها منذ عرفتها، لقد سقطت الفلسفة فمجنون بها منذ عرفتها، لقد سقطت الفلسفة فمجنون بها منذ عرفتها، لقد سقطت في\n'
+  },
+  {
+    'insert':
+        'أما الفلسفة فمجنون الفلسفة فمجنون بها منذ عرفتها، لقد سقطت بها منذ عرفتها، لقد سقطت في أما الفلسفة فمجنون الفلسفة فمجنون بها منذ عرفتها، لقد سقطت بها منذ عرفتها، لقد سقطت في أما الفلسفة فمجنون الفلسفة فمجنون بها منذ عرفتها، لقد سقطت بها منذ عرفتها، لقد سقطت في.\n'
+  },
+  {
+    'insert': '​\n',
+    'attributes': {
+      'embed': {'type': 'hr'}
     }
   },
-  {"insert": "\n"},
+  {'insert': '\n'},
+  {
+    'insert':
+        'أما الفلسفة فمجنون بها منذ عرفتها، لقد سقطت الفلسفة فمجنون بها منذ عرفتها، لقد سقطت الفلسفة فمجنون بها منذ عرفتها، لقد سقطت في\n'
+  },
+  {
+    'insert':
+        'أما الفلسفة فمجنون الفلسفة فمجنون بها منذ عرفتها، لقد سقطت بها منذ عرفتها، لقد سقطت في أما الفلسفة فمجنون الفلسفة فمجنون بها منذ عرفتها، لقد سقطت بها منذ عرفتها، لقد سقطت في أما الفلسفة فمجنون الفلسفة فمجنون بها منذ عرفتها، لقد سقطت بها منذ عرفتها، لقد سقطت في.\n'
+  },
+  {
+    'insert': '​\n',
+    'attributes': {
+      'embed': {'type': 'hr'}
+    }
+  },
 ];
 
 Delta getDelta() {
@@ -65,14 +86,14 @@ class _FullPageEditorScreenState extends State<FullPageEditorScreen> {
   @override
   void initState() {
     super.initState();
-    // _sub = _controller.document.changes.listen((change) {
-    //   print('${change.source}: ${change.change}');
-    // });
+    _sub = _controller.document.changes.listen((change) {
+      // print('${change.source}: ${change.change}');
+    });
   }
 
   @override
   void dispose() {
-    // _sub.cancel();
+    _sub.cancel();
     super.dispose();
   }
 
@@ -93,30 +114,36 @@ class _FullPageEditorScreenState extends State<FullPageEditorScreen> {
           )
         ],
       ),
-      body: ZefyrTheme(
-        data: ZefyrThemeData(
-          defaultLineTheme: LineTheme(
-            padding: EdgeInsets.only(top: 4.0, bottom: 8.0, right: 20.0, left: 20.0),
-            textStyle: TextStyle(
-              color: Colors.blueGrey,
-              fontWeight: FontWeight.w600,
-              fontSize: 19.0,
-              height: 1.6,
+      body: Column(
+        children: [
+          Text('Hello'),
+          ZefyrTheme(
+            data: ZefyrThemeData(
+              defaultLineTheme: LineTheme(
+                padding: EdgeInsets.only(top: 4.0, bottom: 8.0, right: 20.0, left: 20.0),
+                textStyle: TextStyle(
+                  color: Colors.blueGrey,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 19.0,
+                  height: 1.6,
+                ),
+              ),
+            ),
+            child: SafeArea(
+              child: ZefyrScaffold(
+                child: ZefyrEditor(
+                  controller: _controller,
+                  focusNode: _focusNode,
+                  mode: _editing ? ZefyrMode.edit : ZefyrMode.select,
+                  imageDelegate: CustomImageDelegate(),
+                  keyboardAppearance: _darkTheme ? Brightness.dark : Brightness.light,
+                  padding: EdgeInsets.all(0),
+                  selectionControls: !_editing ? AppTextSelectionControls() : null,
+                ),
+              ),
             ),
           ),
-        ),
-        child: SafeArea(
-          child: ZefyrScaffold(
-            child: ZefyrEditor(
-              controller: _controller,
-              focusNode: _focusNode,
-              mode: _editing ? ZefyrMode.edit : ZefyrMode.view,
-              imageDelegate: CustomImageDelegate(),
-              keyboardAppearance: _darkTheme ? Brightness.dark : Brightness.light,
-              padding: EdgeInsets.all(0),
-            ),
-          ),
-        ),
+        ],
       ),
     );
     if (_darkTheme) {
@@ -138,7 +165,7 @@ class _FullPageEditorScreenState extends State<FullPageEditorScreen> {
     return [
       CheckedPopupMenuItem(
         value: _Options.darkTheme,
-        child: Text("Dark theme"),
+        child: Text('Dark theme'),
         checked: _darkTheme,
       ),
     ];

@@ -9,8 +9,7 @@ import 'theme.dart';
 
 /// Represents regular paragraph line in a Zefyr editor.
 class ZefyrParagraph extends StatelessWidget {
-  ZefyrParagraph({Key key, @required this.node, this.blockStyle})
-      : super(key: key);
+  ZefyrParagraph({Key key, @required this.node, this.blockStyle}) : super(key: key);
 
   final LineNode node;
   final TextStyle blockStyle;
@@ -18,7 +17,7 @@ class ZefyrParagraph extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ZefyrTheme.of(context);
-    TextStyle style = theme.defaultLineTheme.textStyle;
+    var style = theme.defaultLineTheme.textStyle;
     if (blockStyle != null) {
       style = style.merge(blockStyle);
     }
@@ -42,7 +41,7 @@ class ZefyrHeading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = themeOf(node, context);
-    TextStyle style = theme.textStyle;
+    var style = theme.textStyle;
     if (blockStyle != null) {
       style = style.merge(blockStyle);
     }

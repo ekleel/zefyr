@@ -88,8 +88,7 @@ class ZefyrEditableText extends StatefulWidget {
   _ZefyrEditableTextState createState() => _ZefyrEditableTextState();
 }
 
-class _ZefyrEditableTextState extends State<ZefyrEditableText>
-    with AutomaticKeepAliveClientMixin {
+class _ZefyrEditableTextState extends State<ZefyrEditableText> with AutomaticKeepAliveClientMixin {
   //
   // New public members
   //
@@ -112,8 +111,7 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
   /// keyboard become visible.
   void requestKeyboard() {
     if (_focusNode.hasFocus) {
-      _input.openConnection(
-          widget.controller.plainTextEditingValue, widget.keyboardAppearance);
+      _input.openConnection(widget.controller.plainTextEditingValue, widget.keyboardAppearance);
     } else {
       FocusScope.of(context).requestFocus(_focusNode);
     }
@@ -131,7 +129,7 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
   }
 
   TextSelectionControls defaultSelectionControls(BuildContext context) {
-    TargetPlatform platform = Theme.of(context).platform;
+    final platform = Theme.of(context).platform;
     if (platform == TargetPlatform.iOS) {
       return cupertinoTextSelectionControls;
     }
@@ -147,16 +145,17 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
     _focusAttachment.reparent();
     super.build(context); // See AutomaticKeepAliveState.
 
-    Widget body = ListBody(children: _buildChildren(context));
+    // Widget body = ListBody(children: _buildChildren(context));
+    Widget body = Column(children: _buildChildren(context));
     if (widget.padding != null) {
       body = Padding(padding: widget.padding, child: body);
     }
 
-    body = SingleChildScrollView(
-      physics: widget.physics,
-      controller: _scrollController,
-      child: body,
-    );
+    // body = SingleChildScrollView(
+    //   physics: widget.physics,
+    //   controller: _scrollController,
+    //   child: body,
+    // );
 
     final layers = <Widget>[body];
     layers.add(ZefyrSelectionOverlay(
@@ -290,8 +289,7 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
 
   // Triggered for both text and selection changes.
   void _handleLocalValueChange() {
-    if (widget.mode.canEdit &&
-        widget.controller.lastChangeSource == ChangeSource.local) {
+    if (widget.mode.canEdit && widget.controller.lastChangeSource == ChangeSource.local) {
       // Only request keyboard for user actions.
       requestKeyboard();
     }
@@ -303,16 +301,13 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
   }
 
   void _handleFocusChange() {
-    _input.openOrCloseConnection(_focusNode,
-        widget.controller.plainTextEditingValue, widget.keyboardAppearance);
+    _input.openOrCloseConnection(_focusNode, widget.controller.plainTextEditingValue, widget.keyboardAppearance);
     _cursorTimer.startOrStop(_focusNode, selection);
     updateKeepAlive();
   }
 
-  void _handleRemoteValueChange(
-      int start, String deleted, String inserted, TextSelection selection) {
-    widget.controller
-        .replaceText(start, deleted.length, inserted, selection: selection);
+  void _handleRemoteValueChange(int start, String deleted, String inserted, TextSelection selection) {
+    widget.controller.replaceText(start, deleted.length, inserted, selection: selection);
   }
 
   void _handleRenderContextChange() {

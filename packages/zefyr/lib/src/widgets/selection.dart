@@ -89,6 +89,7 @@ class _ZefyrSelectionOverlayState extends State<ZefyrSelectionOverlay> implement
   @override
   TextEditingValue get textEditingValue => _scope.controller.plainTextEditingValue;
 
+  @override
   set textEditingValue(TextEditingValue value) {
     final cursorPosition = value.selection.extentOffset;
     final oldText = _scope.controller.document.toPlainText();
@@ -147,12 +148,10 @@ class _ZefyrSelectionOverlayState extends State<ZefyrSelectionOverlay> implement
       _toolbarController?.dispose();
       _toolbarController = null;
     }
-    if (_toolbarController == null) {
-      _toolbarController = AnimationController(
-        duration: _kFadeDuration,
-        vsync: _overlay,
-      );
-    }
+    _toolbarController ??= AnimationController(
+      duration: _kFadeDuration,
+      vsync: _overlay,
+    );
 
     _toolbar?.markNeedsBuild();
   }
@@ -253,13 +252,11 @@ class _ZefyrSelectionOverlayState extends State<ZefyrSelectionOverlay> implement
     assert(_lastTapDownPosition != null);
     final globalPoint = _lastTapDownPosition;
     _lastTapDownPosition = null;
-    HitTestResult result = HitTestResult();
+    var result = HitTestResult();
     WidgetsBinding.instance.hitTest(result, globalPoint);
 
     RenderEditableProxyBox box = _getEditableBox(result);
-    if (box == null) {
-      box = _scope.renderContext.closestBoxForGlobalPoint(globalPoint);
-    }
+    box ??= _scope.renderContext.closestBoxForGlobalPoint(globalPoint);
     if (box == null) return null;
 
     final localPoint = box.globalToLocal(globalPoint);
@@ -282,9 +279,9 @@ class _ZefyrSelectionOverlayState extends State<ZefyrSelectionOverlay> implement
   }
 
   void _handleLongPress() {
-    final Offset globalPoint = _longPressPosition;
+    final globalPoint = _longPressPosition;
     _longPressPosition = null;
-    HitTestResult result = HitTestResult();
+    final result = HitTestResult();
     WidgetsBinding.instance.hitTest(result, globalPoint);
     final box = _getEditableBox(result);
     if (box == null) {
@@ -349,10 +346,10 @@ class _SelectionHandleDriverState extends State<SelectionHandleDriver> with Sing
   List<TextSelectionPoint> getEndpointsForSelection(RenderEditableBox block) {
     if (block == null) return null;
 
-    final Offset paintOffset = Offset.zero;
-    final List<ui.TextBox> boxes = block.getEndpointsForSelection(selection);
-    final Offset start = Offset(boxes.first.start, boxes.first.bottom) + paintOffset;
-    final Offset end = Offset(boxes.last.end, boxes.last.bottom) + paintOffset;
+    final paintOffset = Offset.zero;
+    final boxes = block.getEndpointsForSelection(selection);
+    final start = Offset(boxes.first.start, boxes.first.bottom) + paintOffset;
+    final end = Offset(boxes.last.end, boxes.last.bottom) + paintOffset;
     return <TextSelectionPoint>[
       TextSelectionPoint(start, boxes.first.direction),
       TextSelectionPoint(end, boxes.last.direction),
@@ -397,7 +394,7 @@ class _SelectionHandleDriverState extends State<SelectionHandleDriver> with Sing
       return Container();
     }
 
-    final List<TextSelectionPoint> endpoints = getEndpointsForSelection(block);
+    final endpoints = getEndpointsForSelection(block);
     Offset point;
     TextSelectionHandleType type;
 
@@ -415,20 +412,20 @@ class _SelectionHandleDriverState extends State<SelectionHandleDriver> with Sing
         break;
     }
 
-    final Size viewport = block.size;
+    final viewport = block.size;
     point = Offset(
       point.dx.clamp(0.0, viewport.width),
       point.dy.clamp(0.0, viewport.height),
     );
 
-    final Offset handleAnchor = widget.selectionOverlay.controls.getHandleAnchor(
+    final handleAnchor = widget.selectionOverlay.controls.getHandleAnchor(
       type,
       block.preferredLineHeight,
     );
-    final Size handleSize = widget.selectionOverlay.controls.getHandleSize(
+    final handleSize = widget.selectionOverlay.controls.getHandleSize(
       block.preferredLineHeight,
     );
-    final Rect handleRect = Rect.fromLTWH(
+    final handleRect = Rect.fromLTWH(
       // Put handleAnchor on top of point
       point.dx - handleAnchor.dx,
       point.dy - handleAnchor.dy,
@@ -437,10 +434,10 @@ class _SelectionHandleDriverState extends State<SelectionHandleDriver> with Sing
     );
 
     // Make sure the GestureDetector is big enough to be easily interactive.
-    final Rect interactiveRect = handleRect.expandToInclude(
+    final interactiveRect = handleRect.expandToInclude(
       Rect.fromCircle(center: handleRect.center, radius: kMinInteractiveDimension / 2),
     );
-    final RelativeRect padding = RelativeRect.fromLTRB(
+    final padding = RelativeRect.fromLTRB(
       math.max((interactiveRect.width - handleRect.width) / 2, 0),
       math.max((interactiveRect.height - handleRect.height) / 2, 0),
       math.max((interactiveRect.width - handleRect.width) / 2, 0),

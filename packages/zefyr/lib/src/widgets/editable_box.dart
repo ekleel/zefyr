@@ -45,8 +45,7 @@ class EditableBox extends SingleChildRenderObjectWidget {
   }
 
   @override
-  void updateRenderObject(
-      BuildContext context, RenderEditableProxyBox renderObject) {
+  void updateRenderObject(BuildContext context, RenderEditableProxyBox renderObject) {
     renderObject
       ..node = node
       ..layerLink = layerLink
@@ -59,9 +58,7 @@ class EditableBox extends SingleChildRenderObjectWidget {
 }
 
 class RenderEditableProxyBox extends RenderBox
-    with
-        RenderObjectWithChildMixin<RenderEditableBox>,
-        RenderProxyBoxMixin<RenderEditableBox>
+    with RenderObjectWithChildMixin<RenderEditableBox>, RenderProxyBoxMixin<RenderEditableBox>
     implements RenderEditableBox {
   RenderEditableProxyBox({
     RenderEditableBox child,
@@ -94,6 +91,7 @@ class RenderEditableProxyBox extends RenderBox
 
   bool _isDirty = true;
 
+  @override
   ContainerNode node;
 
   LayerLink get layerLink => _layerLink;
@@ -158,9 +156,9 @@ class RenderEditableProxyBox extends RenderBox
     }
     if (!_selection.isCollapsed) return false;
 
-    final int start = node.documentOffset;
-    final int end = start + node.length;
-    final int caretOffset = _selection.extentOffset;
+    final start = node.documentOffset;
+    final end = start + node.length;
+    final caretOffset = _selection.extentOffset;
     return caretOffset >= start && caretOffset < end;
   }
 
@@ -230,8 +228,7 @@ class RenderEditableProxyBox extends RenderBox
   }
 
   void _paintCursor(PaintingContext context, Offset offset) {
-    Offset caretOffset =
-        getOffsetForCaret(_selection.extent, _cursorPainter.prototype);
+    final caretOffset = getOffsetForCaret(_selection.extent, _cursorPainter.prototype);
     _cursorPainter.paint(context.canvas, caretOffset + offset);
   }
 
@@ -258,8 +255,7 @@ class RenderEditableProxyBox extends RenderBox
   SelectionOrder get selectionOrder => child.selectionOrder;
 
   @override
-  void paintSelection(PaintingContext context, Offset offset,
-          TextSelection selection, Color selectionColor) =>
+  void paintSelection(PaintingContext context, Offset offset, TextSelection selection, Color selectionColor) =>
       child.paintSelection(context, offset, selection, selectionColor);
 
   @override
@@ -267,23 +263,19 @@ class RenderEditableProxyBox extends RenderBox
       child.getOffsetForCaret(position, caretPrototype);
 
   @override
-  TextSelection getLocalSelection(TextSelection documentSelection) =>
-      child.getLocalSelection(documentSelection);
-
-  bool intersectsWithSelection(TextSelection selection) =>
-      child.intersectsWithSelection(selection);
+  TextSelection getLocalSelection(TextSelection documentSelection) => child.getLocalSelection(documentSelection);
 
   @override
-  List<ui.TextBox> getEndpointsForSelection(TextSelection selection) =>
-      child.getEndpointsForSelection(selection);
+  bool intersectsWithSelection(TextSelection selection) => child.intersectsWithSelection(selection);
 
   @override
-  ui.TextPosition getPositionForOffset(ui.Offset offset) =>
-      child.getPositionForOffset(offset);
+  List<ui.TextBox> getEndpointsForSelection(TextSelection selection) => child.getEndpointsForSelection(selection);
 
   @override
-  TextRange getWordBoundary(ui.TextPosition position) =>
-      child.getWordBoundary(position);
+  ui.TextPosition getPositionForOffset(ui.Offset offset) => child.getPositionForOffset(offset);
+
+  @override
+  TextRange getWordBoundary(ui.TextPosition position) => child.getWordBoundary(position);
 }
 
 enum SelectionOrder {
@@ -315,8 +307,7 @@ abstract class RenderEditableBox extends RenderBox {
   /// Paint order of selection in this editable box.
   SelectionOrder get selectionOrder;
 
-  void paintSelection(PaintingContext context, Offset offset,
-      TextSelection selection, Color selectionColor);
+  void paintSelection(PaintingContext context, Offset offset, TextSelection selection, Color selectionColor);
 
   Offset getOffsetForCaret(TextPosition position, Rect caretPrototype);
 
@@ -327,18 +318,17 @@ abstract class RenderEditableBox extends RenderBox {
   TextSelection getLocalSelection(TextSelection documentSelection) {
     if (!intersectsWithSelection(documentSelection)) return null;
 
-    int nodeBase = node.documentOffset;
-    int nodeExtent = nodeBase + node.length;
-    int base = math.max(0, documentSelection.baseOffset - nodeBase);
-    int extent =
-        math.min(documentSelection.extentOffset, nodeExtent) - nodeBase;
+    final nodeBase = node.documentOffset;
+    final nodeExtent = nodeBase + node.length;
+    final base = math.max(0, documentSelection.baseOffset - nodeBase);
+    final extent = math.min(documentSelection.extentOffset, nodeExtent) - nodeBase;
     return documentSelection.copyWith(baseOffset: base, extentOffset: extent);
   }
 
   /// Returns `true` if this box intersects with document [selection].
   bool intersectsWithSelection(TextSelection selection) {
-    final int base = node.documentOffset;
-    final int extent = base + node.length;
+    final base = node.documentOffset;
+    final extent = base + node.length;
     return base <= selection.extentOffset && selection.baseOffset <= extent;
   }
 }

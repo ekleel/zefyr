@@ -11,8 +11,7 @@ class CursorPainter {
   static const double _kCaretWidth = 1.0; // pixels
 
   static Rect buildPrototype(double lineHeight) {
-    return Rect.fromLTWH(
-        0.0, 0.0, _kCaretWidth, lineHeight - _kCaretHeightOffset);
+    return Rect.fromLTWH(0.0, 0.0, _kCaretWidth, lineHeight - _kCaretHeightOffset);
   }
 
   CursorPainter(Color color)
@@ -35,8 +34,8 @@ class CursorPainter {
   }
 
   void paint(Canvas canvas, Offset offset) {
-    final Paint paint = Paint()..color = _color;
-    final Rect caretRect = _prototype.shift(offset);
+    final paint = Paint()..color = _color;
+    final caretRect = _prototype.shift(offset);
     canvas.drawRect(caretRect, paint);
   }
 }

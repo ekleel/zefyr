@@ -22,6 +22,7 @@ class CustomImageDelegate implements ZefyrImageDelegate<ImageSource> {
 
   @override
   Future<String> pickImage(BuildContext context, ImageSource source) async {
+    // ignore: deprecated_member_use
     final file = await ImagePicker.pickImage(source: source);
     if (file == null) return null;
     return file.uri.toString();

@@ -33,7 +33,7 @@ class ZefyrController extends ChangeNotifier {
 
   /// Zefyr document managed by this controller.
   NotusDocument get document => _document;
-  NotusDocument _document;
+  final NotusDocument _document;
 
   /// Currently selected text within the [document].
   TextSelection get selection => _selection;
@@ -53,15 +53,13 @@ class ZefyrController extends ChangeNotifier {
   /// Updates selection with specified [value].
   ///
   /// [value] and [source] cannot be `null`.
-  void updateSelection(TextSelection value,
-      {ChangeSource source = ChangeSource.remote}) {
+  void updateSelection(TextSelection value, {ChangeSource source = ChangeSource.remote}) {
     _updateSelectionSilent(value, source: source);
     notifyListeners();
   }
 
   // Updates selection without triggering notifications to listeners.
-  void _updateSelectionSilent(TextSelection value,
-      {ChangeSource source = ChangeSource.remote}) {
+  void _updateSelectionSilent(TextSelection value, {ChangeSource source = ChangeSource.remote}) {
     assert(value != null && source != null);
     _selection = value;
     _lastChangeSource = source;
@@ -81,8 +79,7 @@ class ZefyrController extends ChangeNotifier {
   /// can be composed without errors.
   ///
   /// If composing this change fails then this method throws [ComposeError].
-  void compose(Delta change,
-      {TextSelection selection, ChangeSource source = ChangeSource.remote}) {
+  void compose(Delta change, {TextSelection selection, ChangeSource source = ChangeSource.remote}) {
     if (change.isNotEmpty) {
       _document.compose(change, source);
     }
@@ -91,10 +88,8 @@ class ZefyrController extends ChangeNotifier {
     } else {
       // Transform selection against the composed change and give priority to
       // current position (force: false).
-      final base =
-          change.transformPosition(_selection.baseOffset, force: false);
-      final extent =
-          change.transformPosition(_selection.extentOffset, force: false);
+      final base = change.transformPosition(_selection.baseOffset, force: false);
+      final extent = change.transformPosition(_selection.extentOffset, force: false);
       selection = _selection.copyWith(baseOffset: base, extentOffset: extent);
       if (_selection != selection) {
         _updateSelectionSilent(selection, source: source);
@@ -114,23 +109,16 @@ class ZefyrController extends ChangeNotifier {
   /// in any cases as we don't want to keep it except on inserts.
   ///
   /// Optionally updates selection if provided.
-  void replaceText(int index, int length, String text,
-      {TextSelection selection}) {
+  void replaceText(int index, int length, String text, {TextSelection selection}) {
     Delta delta;
 
     if (length > 0 || text.isNotEmpty) {
       delta = document.replace(index, length, text);
       // If the delta is a classical insert operation and we have toggled
       // some style, then we apply it to our document.
-      if (delta != null &&
-          toggledStyles.isNotEmpty &&
-          delta.isNotEmpty &&
-          delta.length <= 2 &&
-          delta.last.isInsert) {
+      if (delta != null && toggledStyles.isNotEmpty && delta.isNotEmpty && delta.length <= 2 && delta.last.isInsert) {
         // Apply it.
-        Delta retainDelta = Delta()
-          ..retain(index)
-          ..retain(text.length, toggledStyles.toJson());
+        final retainDelta = Delta()..retain(index)..retain(text.length, toggledStyles.toJson());
         document.compose(retainDelta, ChangeSource.local);
       }
     }
@@ -144,11 +132,11 @@ class ZefyrController extends ChangeNotifier {
       } else {
         // need to transform selection position in case actual delta
         // is different from user's version (in deletes and inserts).
-        Delta user = Delta()
+        final user = Delta()
           ..retain(index)
           ..insert(text)
           ..delete(length);
-        int positionDelta = getPositionDelta(user, delta);
+        final positionDelta = getPositionDelta(user, delta);
         _updateSelectionSilent(
           selection.copyWith(
             baseOffset: selection.baseOffset + positionDelta,
@@ -166,9 +154,7 @@ class ZefyrController extends ChangeNotifier {
     final change = document.format(index, length, attribute);
     _lastChangeSource = ChangeSource.local;
 
-    if (length == 0 &&
-        (attribute.key == NotusAttribute.bold.key ||
-            attribute.key == NotusAttribute.italic.key)) {
+    if (length == 0 && (attribute.key == NotusAttribute.bold.key || attribute.key == NotusAttribute.italic.key)) {
       // Add the attribute to our toggledStyle. It will be used later upon insertion.
       _toggledStyles = toggledStyles.put(attribute);
     }
@@ -178,8 +164,7 @@ class ZefyrController extends ChangeNotifier {
     // inserts data into the document (e.g. embeds).
     final base = change.transformPosition(_selection.baseOffset);
     final extent = change.transformPosition(_selection.extentOffset);
-    final adjustedSelection =
-        _selection.copyWith(baseOffset: base, extentOffset: extent);
+    final adjustedSelection = _selection.copyWith(baseOffset: base, extentOffset: extent);
     if (_selection != adjustedSelection) {
       _updateSelectionSilent(adjustedSelection, source: _lastChangeSource);
     }
@@ -188,8 +173,8 @@ class ZefyrController extends ChangeNotifier {
 
   /// Formats current selection with [attribute].
   void formatSelection(NotusAttribute attribute) {
-    int index = _selection.start;
-    int length = _selection.end - index;
+    final index = _selection.start;
+    final length = _selection.end - index;
     formatText(index, length, attribute);
   }
 
@@ -198,8 +183,8 @@ class ZefyrController extends ChangeNotifier {
   /// If nothing is selected but we've toggled an attribute,
   ///  we also merge those in our style before returning.
   NotusStyle getSelectionStyle() {
-    int start = _selection.start;
-    int length = _selection.end - start;
+    final start = _selection.start;
+    final length = _selection.end - start;
     var lineStyle = _document.collectStyle(start, length);
 
     lineStyle = lineStyle.mergeAll(toggledStyles);

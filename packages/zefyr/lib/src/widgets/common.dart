@@ -56,6 +56,10 @@ class _ZefyrLineState extends State<ZefyrLine> {
         text: buildText(context, scope),
       );
     }
+    // print('scope link: ${_link}');
+    // print('scope renderContext: ${scope.renderContext}');
+    // print('scope showCursor: ${scope.showCursor}');
+    // print('scope selection: ${scope.selection}');
 
     if (scope.isEditable) {
       Color cursorColor;
@@ -101,14 +105,14 @@ class _ZefyrLineState extends State<ZefyrLine> {
   }
 
   void bringIntoView(BuildContext context) {
-    ScrollableState scrollable = Scrollable.of(context);
+    final scrollable = Scrollable.of(context);
     final object = context.findRenderObject();
     assert(object.attached);
-    final RenderAbstractViewport viewport = RenderAbstractViewport.of(object);
+    final viewport = RenderAbstractViewport.of(object);
     assert(viewport != null);
 
-    final double offset = scrollable.position.pixels;
-    double target = viewport.getOffsetToReveal(object, 0.0).offset;
+    final offset = scrollable.position.pixels;
+    var target = viewport.getOffsetToReveal(object, 0.0).offset;
     if (target - offset < 0.0) {
       scrollable.position.jumpTo(target);
       return;
@@ -121,8 +125,7 @@ class _ZefyrLineState extends State<ZefyrLine> {
 
   TextSpan buildText(BuildContext context, ZefyrScope scope) {
     final theme = ZefyrTheme.of(context);
-    final List<TextSpan> children =
-        widget.node.children.map((node) => _segmentToTextSpan(node, theme, scope)).toList(growable: false);
+    final children = widget.node.children.map((node) => _segmentToTextSpan(node, theme, scope)).toList(growable: false);
     return TextSpan(style: widget.style, children: children);
   }
 
@@ -150,7 +153,7 @@ class _ZefyrLineState extends State<ZefyrLine> {
   }
 
   TextStyle _getTextStyle(NotusStyle style, ZefyrThemeData theme) {
-    TextStyle result = TextStyle();
+    var result = TextStyle();
     if (style.containsSame(NotusAttribute.bold)) {
       result = result.merge(theme.attributeTheme.bold);
     }
@@ -166,7 +169,7 @@ class _ZefyrLineState extends State<ZefyrLine> {
   Widget buildEmbed(BuildContext context, ZefyrScope scope) {
     EmbedNode node = widget.node.children.single;
     EmbedAttribute embed = node.style.get(NotusAttribute.embed);
-    final ZefyrThemeData theme = ZefyrTheme.of(context);
+    final theme = ZefyrTheme.of(context);
 
     if (embed.type == EmbedType.horizontalRule) {
       return ZefyrHorizontalRule(node: node, theme: theme);

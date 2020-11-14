@@ -20,9 +20,9 @@ class ZefyrApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      locale: Locale("ar", "SA"),
+      locale: Locale('ar', 'SA'),
       supportedLocales: [
-        Locale("ar", "SA"),
+        Locale('ar', 'SA'),
       ],
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
@@ -33,9 +33,9 @@ class ZefyrApp extends StatelessWidget {
       title: 'Zefyr Editor',
       home: HomePage(),
       routes: {
-        "/fullPage": buildFullPage,
-        "/form": buildFormPage,
-        "/view": buildViewPage,
+        '/fullPage': buildFullPage,
+        '/form': buildFormPage,
+        '/view': buildViewPage,
       },
     );
   }

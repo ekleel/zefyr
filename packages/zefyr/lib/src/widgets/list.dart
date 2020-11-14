@@ -17,18 +17,15 @@ class ZefyrList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ZefyrTheme.of(context);
-    List<Widget> items = [];
-    int index = 1;
+    final items = <Widget>[];
+    var index = 1;
     for (var line in node.children) {
       items.add(_buildItem(line, index));
       index++;
     }
 
-    final isNumberList =
-        node.style.get(NotusAttribute.block) == NotusAttribute.block.numberList;
-    EdgeInsets padding = isNumberList
-        ? theme.attributeTheme.numberList.padding
-        : theme.attributeTheme.bulletList.padding;
+    final isNumberList = node.style.get(NotusAttribute.block) == NotusAttribute.block.numberList;
+    var padding = isNumberList ? theme.attributeTheme.numberList.padding : theme.attributeTheme.bulletList.padding;
     padding = padding.copyWith(left: theme.indentWidth);
 
     return Padding(
@@ -55,11 +52,9 @@ class ZefyrListItem extends StatelessWidget {
     final BlockNode block = node.parent;
     final style = block.style.get(NotusAttribute.block);
     final theme = ZefyrTheme.of(context);
-    final blockTheme = (style == NotusAttribute.block.bulletList)
-        ? theme.attributeTheme.bulletList
-        : theme.attributeTheme.numberList;
-    final bulletText =
-        (style == NotusAttribute.block.bulletList) ? '•' : '$index.';
+    final blockTheme =
+        (style == NotusAttribute.block.bulletList) ? theme.attributeTheme.bulletList : theme.attributeTheme.numberList;
+    final bulletText = (style == NotusAttribute.block.bulletList) ? '•' : '$index.';
 
     TextStyle textStyle;
     Widget content;
@@ -80,8 +75,7 @@ class ZefyrListItem extends StatelessWidget {
       padding = blockTheme.linePadding;
     }
 
-    Widget bullet =
-        SizedBox(width: 24.0, child: Text(bulletText, style: textStyle));
+    Widget bullet = SizedBox(width: 24.0, child: Text(bulletText, style: textStyle));
     if (padding != null) {
       bullet = Padding(padding: padding, child: bullet);
     }
