@@ -16,7 +16,7 @@ class _ScrollableLayoutState extends State<ScrollableLayout> {
   @override
   Widget build(BuildContext context) {
     return DemoScaffold(
-      documentFilename: 'layout_scrollable.note',
+      documentFilename: 'welcome.note',
       builder: _buildContent,
     );
   }
@@ -38,8 +38,7 @@ class _ScrollableLayoutState extends State<ScrollableLayout> {
                 color: Colors.green,
               ),
               title: Text('Please review your document'),
-              subtitle: Text(
-                  'Below you can see Zefyr editor which is embedded into this ListView'),
+              subtitle: Text('Below you can see Zefyr editor which is embedded into this ListView'),
             ),
             Divider(),
             ZefyrEditor(
@@ -60,8 +59,7 @@ class _ScrollableLayoutState extends State<ScrollableLayout> {
               subtitle: Text('If yes then just hit the Submit button'),
               trailing: FlatButton(
                 color: Theme.of(context).accentColor,
-                onPressed: () =>
-                    showDialog(context: context, builder: _buildThanks),
+                onPressed: () => showDialog(context: context, builder: _buildThanks),
                 child: Text(
                   'Submit',
                   style: Theme.of(context).accentTextTheme.button,

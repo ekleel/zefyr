@@ -16,7 +16,7 @@ class _ExpandedLayoutState extends State<ExpandedLayout> {
   @override
   Widget build(BuildContext context) {
     return DemoScaffold(
-      documentFilename: 'layout_expanded.note',
+      documentFilename: 'welcome.note',
       builder: _buildContent,
       actions: [
         IconButton(

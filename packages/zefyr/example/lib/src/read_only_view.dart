@@ -16,7 +16,7 @@ class _ReadOnlyViewState extends State<ReadOnlyView> {
   @override
   Widget build(BuildContext context) {
     return DemoScaffold(
-      documentFilename: 'basics_read_only_view.note',
+      documentFilename: 'welcome.note',
       builder: _buildContent,
       showToolbar: _edit == true,
       floatingActionButton: FloatingActionButton.extended(

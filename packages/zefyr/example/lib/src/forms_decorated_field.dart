@@ -14,7 +14,7 @@ class _DecoratedFieldDemoState extends State<DecoratedFieldDemo> {
   @override
   Widget build(BuildContext context) {
     return DemoScaffold(
-      documentFilename: 'decorated_field.note',
+      documentFilename: 'welcome.note',
       builder: _buildContent,
       showToolbar: false,
     );

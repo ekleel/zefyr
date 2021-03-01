@@ -80,8 +80,7 @@ class EditableTextBlock extends StatelessWidget {
     return children.toList(growable: false);
   }
 
-  Widget _buildLeading(
-      BuildContext context, LineNode node, int index, int count) {
+  Widget _buildLeading(BuildContext context, LineNode node, int index, int count) {
     final theme = ZefyrTheme.of(context);
     final block = node.style.get(NotusAttribute.block);
     if (block == NotusAttribute.block.numberList) {
@@ -101,8 +100,7 @@ class EditableTextBlock extends StatelessWidget {
       return _NumberPoint(
         index: index,
         count: count,
-        style: theme.code.style
-            .copyWith(color: theme.code.style.color.withOpacity(0.4)),
+        style: theme.code.style.copyWith(color: theme.code.style.color.withOpacity(0.4)),
         width: 32.0,
         padding: 16.0,
         withDot: false,
@@ -123,8 +121,7 @@ class EditableTextBlock extends StatelessWidget {
     }
   }
 
-  VerticalSpacing _getSpacingForLine(
-      LineNode node, int index, int count, ZefyrThemeData theme) {
+  VerticalSpacing _getSpacingForLine(LineNode node, int index, int count, ZefyrThemeData theme) {
     final heading = node.style.get(NotusAttribute.heading);
 
     var top = 0.0;
@@ -144,11 +141,9 @@ class EditableTextBlock extends StatelessWidget {
       var lineSpacing;
       if (block == NotusAttribute.block.quote) {
         lineSpacing = theme.quote.lineSpacing;
-      } else if (block == NotusAttribute.block.numberList ||
-          block == NotusAttribute.block.bulletList) {
+      } else if (block == NotusAttribute.block.numberList || block == NotusAttribute.block.bulletList) {
         lineSpacing = theme.lists.lineSpacing;
-      } else if (block == NotusAttribute.block.code ||
-          block == NotusAttribute.block.code) {
+      } else if (block == NotusAttribute.block.code || block == NotusAttribute.block.code) {
         lineSpacing = theme.lists.lineSpacing;
       }
       top = lineSpacing.top;
@@ -197,8 +192,7 @@ class _EditableBlock extends MultiChildRenderObjectWidget {
     @required List<Widget> children,
   }) : super(key: key, children: children);
 
-  EdgeInsets get _padding =>
-      EdgeInsets.only(top: padding.top, bottom: padding.bottom);
+  EdgeInsets get _padding => EdgeInsets.only(top: padding.top, bottom: padding.bottom);
 
   EdgeInsets get _contentPadding => contentPadding ?? EdgeInsets.zero;
 
@@ -214,8 +208,7 @@ class _EditableBlock extends MultiChildRenderObjectWidget {
   }
 
   @override
-  void updateRenderObject(
-      BuildContext context, covariant RenderEditableTextBlock renderObject) {
+  void updateRenderObject(BuildContext context, covariant RenderEditableTextBlock renderObject) {
     renderObject.node = node;
     renderObject.textDirection = textDirection;
     renderObject.padding = _padding;
