@@ -603,7 +603,7 @@ class RenderEditableTextLine extends RenderEditableBox {
     if (leading != null) {
       final parentData = leading.parentData as BoxParentData;
       final effectiveOffset = offset + parentData.offset;
-      print('leading offset: $effectiveOffset');
+      // print('leading offset: $effectiveOffset');
       context.paintChild(leading, effectiveOffset);
     }
 
@@ -622,7 +622,7 @@ class RenderEditableTextLine extends RenderEditableBox {
         _paintCursor(context, effectiveOffset);
       }
 
-      print('body offset: $effectiveOffset');
+      // print('body offset: $effectiveOffset');
       context.paintChild(body, effectiveOffset);
 
       if (hasFocus && _cursorController.showCursor.value && containsCursor && _cursorController.style.paintAboveText) {
