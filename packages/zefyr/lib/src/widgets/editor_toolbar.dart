@@ -377,20 +377,21 @@ class ZefyrToolbar extends StatefulWidget implements PreferredSizeWidget {
 
   const ZefyrToolbar({Key key, @required this.children}) : super(key: key);
 
-  factory ZefyrToolbar.basic(
-      {Key key,
-      @required ZefyrController controller,
-      bool hideBoldButton = false,
-      bool hideItalicButton = false,
-      bool hideUnderLineButton = false,
-      bool hideStrikeThrough = false,
-      bool hideHeadingStyle = false,
-      bool hideListNumbers = false,
-      bool hideListBullets = false,
-      bool hideCodeBlock = false,
-      bool hideQuote = false,
-      bool hideLink = false,
-      bool hideHorizontalRule = false}) {
+  factory ZefyrToolbar.basic({
+    Key key,
+    @required ZefyrController controller,
+    bool hideBoldButton = false,
+    bool hideItalicButton = false,
+    bool hideUnderLineButton = false,
+    bool hideStrikeThrough = false,
+    bool hideHeadingStyle = false,
+    bool hideListNumbers = false,
+    bool hideListBullets = false,
+    bool hideCodeBlock = false,
+    bool hideQuote = false,
+    bool hideLink = false,
+    bool hideHorizontalRule = false,
+  }) {
     return ZefyrToolbar(
       key: key,
       children: [
