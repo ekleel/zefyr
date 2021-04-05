@@ -171,6 +171,19 @@ class _HomePageState extends State<HomePage> {
               // readOnly: true,
               // padding: EdgeInsets.only(left: 16, right: 16),
               onLaunchUrl: _launchUrl,
+              embedBuilder: (context, node) {
+                return Row(
+                  children: [
+                    Text('مرفق! ${node.value.type}'),
+                    ElevatedButton(
+                      child: Icon(Icons.plus_one),
+                      onPressed: () {
+                        print('IconButton clicked!');
+                      },
+                    ),
+                  ],
+                );
+              },
             ),
           ),
         ),
